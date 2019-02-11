@@ -8,7 +8,8 @@ class App extends Component {
     super(props);
     this.state={
       item: "",
-      active: true
+      index: 0,
+      prevIndex:3
     }
   }
 
@@ -21,16 +22,89 @@ class App extends Component {
     
   }
 
-  checkCarousel(){
-    if(this.state.items){
-      const carousel = document.querySelectorAll(".carousel-item");
+  handleClickNext(e){
+    e.preventDefault();
+    const {index, prevIndex} = this.state;
+    const carousel = document.querySelectorAll(".carousel-item");
+    carousel[index].nextSibling.classList.add("active");
+
+    this.setState({
+      index: index + 1,
+      prevIndex: index,
+    }, () => {
+      this.hidePrev();
+    })
+  }
+
+  hidePrev(){
+    const {index, prevIndex} = this.state;
+    const carousel = document.querySelectorAll(".carousel-item");
+    carousel[prevIndex].classList.remove("active");
+
+    if(index == 3){
+      this.setState({
+        index: 0
+      });
+
       carousel[0].classList.add("active");
     }
   }
 
+  // click on previous click
+  handleClickPrev(e){
+    e.preventDefault();
+    const {index, prevIndex} = this.state;
+    const carousel = document.querySelectorAll(".carousel-item");
+    
+    console.log(index);
+    if(index == 0){
+      this.setState({
+        index: 2,
+        prevIndex: 0
+      }, () => {
+        this.hideNext();
+      });
+    }
+    
+    if(index !=0){
+      this.setState({
+        index: index - 1,
+        prevIndex: index
+      }, () => {
+        this.hideNext();
+      });
+    }
+  }
+
+  // hide the other elements
+  hideNext(){
+    const {index, prevIndex} = this.state;
+    const carousel = document.querySelectorAll(".carousel-item");
+
+    carousel[index].classList.add("active");
+    carousel[prevIndex].classList.remove("active");
+  }
+
+  checkCarousel(){
+    const {index, items} = this.state;
+    if(items){ 
+      const carousel = document.querySelectorAll(".carousel-item");
+      carousel[index].classList.add("active");
+    }
+  }
+
   render() {
-    const {items} = this.state;
+    const {items, index, prevIndex} = this.state;
     let newItems;
+
+    if(items){
+      console.log("This is the previous index:")
+      console.log(prevIndex);
+
+      console.log("This is the current index:")
+      console.log(index);
+    }
+
     if(items){
       newItems = items.map( (item) => {
         return(
@@ -53,8 +127,8 @@ class App extends Component {
           <div className="carousel-container">
             {newItems}
             <div className="carousel-buttons">
-              <button className="left">Prev</button>
-              <button className="right">Next</button>
+              <button className="left" onClick={this.handleClickPrev.bind(this)}>Prev</button>
+              <button className="right" onClick={this.handleClickNext.bind(this)}>Next</button>
             </div>
           </div>
         </header>
