@@ -1,0 +1,15 @@
+// @import "picture-container"; 
+
+.App {
+  position: relative;
+  padding:2em;
+  background:#fff;
+  height:100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.carousel-container{
+  position: relative;
+  text-align: center;
+}
