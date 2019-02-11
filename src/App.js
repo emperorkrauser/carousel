@@ -24,7 +24,7 @@ class App extends Component {
   checkCarousel(){
     if(this.state.items){
       const carousel = document.querySelectorAll(".carousel-item");
-      console.log(carousel);
+      carousel[0].classList.add("active");
     }
   }
 
