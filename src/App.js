@@ -9,7 +9,7 @@ class App extends Component {
     this.state={
       item: "",
       index: 0,
-      prevIndex:3
+      prevIndex: carouselItems.length
     }
   }
 
@@ -41,7 +41,7 @@ class App extends Component {
     const carousel = document.querySelectorAll(".carousel-item");
     carousel[prevIndex].classList.remove("active");
 
-    if(index == 3){
+    if(index == carouselItems.length){
       this.setState({
         index: 0
       });
