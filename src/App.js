@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './styles/App.scss';
 import carouselItems from "./constants/carousel_items";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faChevronLeft, faChevronRight);
+
 
 class App extends Component {
   constructor(props){
@@ -9,7 +15,8 @@ class App extends Component {
     this.state={
       item: "",
       index: 0,
-      prevIndex: carouselItems.length
+      prevIndex: carouselItems.length,
+      pressed: false
     }
   }
 
@@ -19,11 +26,12 @@ class App extends Component {
     }, () => {
       this.checkCarousel();
     });
-    
+
+    this.moveCarousel();
   }
 
-  handleClickNext(e){
-    e.preventDefault();
+  // clicking the next button
+  handleClickNext(){
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
     carousel[index].nextSibling.classList.add("active");
@@ -31,11 +39,13 @@ class App extends Component {
     this.setState({
       index: index + 1,
       prevIndex: index,
+      pressed: true
     }, () => {
       this.hidePrev();
     })
   }
 
+  // hiding the previous indexes after clicing next
   hidePrev(){
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
@@ -51,8 +61,7 @@ class App extends Component {
   }
 
   // click on previous click
-  handleClickPrev(e){
-    e.preventDefault();
+  handleClickPrev(){
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
     
@@ -60,7 +69,8 @@ class App extends Component {
     if(index == 0){
       this.setState({
         index: 2,
-        prevIndex: 0
+        prevIndex: 0,
+        pressed: true
       }, () => {
         this.hideNext();
       });
@@ -69,14 +79,15 @@ class App extends Component {
     if(index !=0){
       this.setState({
         index: index - 1,
-        prevIndex: index
+        prevIndex: index,
+        pressed: true
       }, () => {
         this.hideNext();
       });
     }
   }
 
-  // hide the other elements
+  // hide the previous indexes after clicking prev
   hideNext(){
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
@@ -87,10 +98,33 @@ class App extends Component {
 
   checkCarousel(){
     const {index, items} = this.state;
+
     if(items){ 
       const carousel = document.querySelectorAll(".carousel-item");
-      carousel[index].classList.add("active");
+      carousel[index].classList.add("active");    
     }
+  }
+
+  moveCarousel(){
+    const {pressed} = this.state;
+    let interval;
+    let time = 0;
+
+    interval = setInterval(() => {
+      if(!pressed){
+        time++;
+
+        if(time % 5 === 0){
+          this.handleClickNext();
+        }
+
+        console.log(time);
+      }
+      else{
+        clearInterval(interval);
+        time=0;
+      }
+    }, 1000);
   }
 
   render() {
@@ -108,7 +142,7 @@ class App extends Component {
     if(items){
       newItems = items.map( (item) => {
         return(
-          <div key={item.id} className="carousel-item">
+          <div key={item.id} className="carousel-item fade">
             <div className="img-container">
               <img src={item.image_url} alt=""/>
             </div>
@@ -127,8 +161,8 @@ class App extends Component {
           <div className="carousel-container">
             {newItems}
             <div className="carousel-buttons">
-              <button className="left" onClick={this.handleClickPrev.bind(this)}>Prev</button>
-              <button className="right" onClick={this.handleClickNext.bind(this)}>Next</button>
+              <div className="left button" onClick={this.handleClickPrev.bind(this)}><FontAwesomeIcon icon="chevron-left" /></div>
+              <div className="right button" onClick={this.handleClickNext.bind(this)}><FontAwesomeIcon icon="chevron-right" /></div>
             </div>
           </div>
         </header>

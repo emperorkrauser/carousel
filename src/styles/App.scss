@@ -12,10 +12,70 @@
 .carousel-container{
   position: relative;
   text-align: center;
+  height: auto;
   
   .carousel-item{
     opacity: 0;
     display: none;
+    overflow: hidden;
+    width: 640px;
+    height: 360px;
+    border:5px solid #eee;
+  }
+
+  .img-container{
+    position: absolute;
+    width:640px;
+    height: 360px;
+    overflow: hidden;
+    img{
+      width:640px;
+      object-fit: cover;
+    }
+  }
+
+  .img-description{
+    position: absolute;
+    text-align: center;
+    bottom: 40px;
+    width: 100%;
+    color:#fff;
+    p{
+      text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.8);
+      margin:0;
+      padding:0;
+    }
+  }
+
+  .carousel-buttons{
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+    .button{
+      padding:15px;
+      color:#fff;
+      background: crimson;
+      display: inline-block;
+      position: absolute;
+      opacity: 0.8;
+      cursor: pointer;
+      &:hover{
+        transition: all .2s ease-in-out;
+        opacity: 1;
+      }
+    }
+
+    .left{
+      left:0;
+    }
+
+    .right{
+      right:0;
+    }
   }
 }
 
@@ -30,4 +90,18 @@
 .active{
   opacity: 1 !important;
   display: block !important;
+}
+
+.fade{
+  animation: fade 0.5s ease-in-out;
+}
+
+@keyframes fade{
+  0%{
+    opacity: 0;
+  }
+
+  100%{
+    opacity: 1
+  }
 }
