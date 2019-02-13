@@ -12,11 +12,13 @@
 .carousel-container{
   position: relative;
   text-align: center;
-  height: auto;
+  width: 650px;
+  height: 360px;
+  overflow: hidden;
   
   .carousel-item{
+    position: absolute;
     opacity: 0;
-    display: none;
     overflow: hidden;
     width: 640px;
     height: 360px;
@@ -51,7 +53,7 @@
     width: 100%;
     margin: 0;
     position: absolute;
-    top: 50%;
+    top: 160px;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 
@@ -79,6 +81,48 @@
   }
 }
 
+.loading-panel{
+  position: relative;
+  background: rgba(255, 255, 255, 1);
+  width: 100vw;
+  height: 100vh;
+  border: 1px solid #d0d0d0;
+  .loader{
+    position: relative;
+    top:160px;
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid crimson;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+  }
+}
+
+.thumbnails{
+  position: absolute;
+  z-index: 9;
+  .thumb-item{
+    display: inline-block;
+    margin:5px;
+    cursor: pointer;
+    .thumb-img{
+      img{
+        object-fit: cover;
+        width:50px;
+        height:40px;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// misc
 .show{
   opacity: 1;
 }
@@ -89,7 +133,6 @@
 
 .active{
   opacity: 1 !important;
-  display: block !important;
 }
 
 .fade{
@@ -102,6 +145,6 @@
   }
 
   100%{
-    opacity: 1
+    opacity: 1;
   }
 }
