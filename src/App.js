@@ -172,22 +172,32 @@ class App extends Component {
     this.setState({
       index: Number(e.target.id),
       prevIndex: index,
+    }, () => {
+      this.handleShowIndex();
     });
-
-    this.handleShowIndex();
 
   }
 
+  // callback function to show the clicked index
   handleShowIndex(){
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
+    const thumbnails = document.querySelectorAll(".thumb-item");
 
-    console.log(index);
+    if(index != prevIndex){
+      for(let x=0; x <= carousel.length; x++){
+        if(x == index){
+          carousel[x].classList.add("active");
+          carousel[x].classList.add("fade");
 
-    if(!index === prevIndex){
-      carousel[index].classList.add("active");
+          carousel[prevIndex].classList.remove("active");
+          carousel[prevIndex].classList.remove("fade");
+
+          thumbnails[x].classList.add("active-img");
+          thumbnails[prevIndex].classList.remove("active-img");
+        }
+      }
     }
-
   }
 
   render() {
@@ -195,13 +205,15 @@ class App extends Component {
     let newItems;
     let thumbnails;
 
-    // if(items){
-    //   console.log("This is the previous index:")
-    //   console.log(prevIndex);
+    if(items){
+      console.log("--------");
+      console.log("This is the previous index:")
+      console.log(prevIndex);
 
-    //   console.log("This is the current index:")
-    //   console.log(index);
-    // }
+      console.log("This is the current index:")
+      console.log(index);
+      console.log("--------");
+    }
 
     if(!loading){
       newItems = items.map( (item) => {
@@ -228,9 +240,9 @@ class App extends Component {
     if(!loading){
       thumbnails = items.map( (item) => {
         return(
-          <div key={item.id} className="thumb-item">
+          <div key={item.id} className="thumb-item" onClick={this.handleGoToIndex.bind(this)}>
             <div className="thumb-img">
-              <img id={item.id} src={item.image_url} alt="" onClick={this.handleGoToIndex.bind(this)}/>
+              <img id={item.id} src={item.image_url} alt=""/>
             </div>
           </div> 
         )
