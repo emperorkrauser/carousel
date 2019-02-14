@@ -61,16 +61,32 @@ class App extends Component {
   hidePrev(){
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
-    carousel[prevIndex].classList.remove("active");
-    carousel[prevIndex].classList.remove("fade");
+    
+    for(let x=0; x < carousel.length; x++){
+      if(x != index){
+        carousel[x].classList.add("hide");
+        carousel[x].classList.remove("fade");
+        carousel[x].classList.remove("active");
+      }
+      else{
+        carousel[x].classList.remove("hide");
+        carousel[x].classList.add("fade");
+        carousel[x].classList.add("active");
+      }
+    }
 
     if(index == carouselItems.length){
       this.setState({
         index: 0
       });
 
-      carousel[0].classList.add("active");
-      carousel[0].classList.add("fade");
+      for(let x=0; x < carousel.length; x++){
+        if(x == 0){
+          carousel[0].classList.add("active");
+          carousel[0].classList.add("fade");
+          carousel[0].classList.remove("hide");
+        }
+      }
     }
   }
 
@@ -109,10 +125,19 @@ class App extends Component {
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
 
-    carousel[index].classList.add("active");
-    carousel[index].classList.add("fade");
-    carousel[prevIndex].classList.remove("active");
-    carousel[prevIndex].classList.remove("fade");
+    for(let x=0; x < carousel.length; x++){
+      if(x == index){
+        carousel[x].classList.add("active");
+        carousel[x].classList.add("fade");
+        carousel[x].classList.remove("hide");
+      }
+      else{
+        carousel[x].classList.add("hide");
+        carousel[x].classList.remove("fade");
+        carousel[x].classList.remove("active");
+      }
+    }
+
   }
 
   // initial checking of the carousel
@@ -122,9 +147,17 @@ class App extends Component {
     if(!loading){
       const carousel = document.querySelectorAll(".carousel-item");
       const thumbItems = document.querySelectorAll(".thumb-item");
+
       carousel[index].classList.add("active");
       carousel[index].classList.add("fade");
+      carousel[0].classList.remove("hide");
       thumbItems[index].classList.add("active-img");
+
+      for(let x=index; x < carousel.length; x++){
+        if(x != 0){
+          carousel[x].classList.add("hide");
+        }
+      }
     }
   }
 
@@ -160,9 +193,6 @@ class App extends Component {
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
 
-    carousel[index].nextSibling.classList.add("active");
-    carousel[index].nextSibling.classList.add("fade");
-
     this.setState({
       index: index + 1,
       prevIndex: index,
@@ -193,15 +223,17 @@ class App extends Component {
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
 
-    if(index != prevIndex){
-      for(let x=0; x < carousel.length; x++){
-        if(x == index){
-          carousel[x].classList.add("active");
-          carousel[x].classList.add("fade");
+    for(let x=0; x < carousel.length; x++){
+      if(index != prevIndex){
+        carousel[x].classList.add("hide");
+        carousel[x].classList.remove("fade");
+        carousel[x].classList.remove("active");
+      }
 
-          carousel[prevIndex].classList.remove("active");
-          carousel[prevIndex].classList.remove("fade");
-        }
+      if(index == x){
+        carousel[x].classList.remove("hide");
+        carousel[x].classList.add("fade");
+        carousel[x].classList.add("active");
       }
     }
   }

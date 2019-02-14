@@ -18,7 +18,6 @@
   
   .carousel-item{
     position: absolute;
-    opacity: 0;
     overflow: hidden;
     width: 640px;
     height: 360px;
@@ -141,7 +140,7 @@
 }
 
 .active{
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 .fade{
