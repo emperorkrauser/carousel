@@ -39,16 +39,20 @@ class App extends Component {
   handleClickNext(){
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
+
     carousel[index].nextSibling.classList.add("active");
     carousel[index].nextSibling.classList.add("fade");
 
-    this.setState({
-      index: index + 1,
-      prevIndex: index,
-      pressed: true
-    }, () => {
-      this.hidePrev();
-    });
+    if(index != index.length){
+      this.setState({
+        index: index + 1,
+        prevIndex: index,
+        pressed: true
+      }, () => {
+        this.hidePrev();
+        this.handleMarkThumbnail();
+      });
+    }
 
     this.handleClearInterval();
   }
@@ -82,6 +86,7 @@ class App extends Component {
         pressed: true
       }, () => {
         this.hideNext();
+        this.handleMarkThumbnail();
       });
     }
     
@@ -92,6 +97,7 @@ class App extends Component {
         pressed: true
       }, () => {
         this.hideNext();
+        this.handleMarkThumbnail();
       });
     }
 
@@ -115,8 +121,10 @@ class App extends Component {
 
     if(!loading){
       const carousel = document.querySelectorAll(".carousel-item");
+      const thumbItems = document.querySelectorAll(".thumb-item");
       carousel[index].classList.add("active");
       carousel[index].classList.add("fade");
+      thumbItems[index].classList.add("active-img");
     }
   }
 
@@ -160,6 +168,7 @@ class App extends Component {
       prevIndex: index,
     }, () => {
       this.hidePrev();
+      this.handleMarkThumbnail();
     });
   }
 
@@ -174,6 +183,7 @@ class App extends Component {
       prevIndex: index,
     }, () => {
       this.handleShowIndex();
+      this.handleMarkThumbnail();
     });
 
   }
@@ -182,21 +192,37 @@ class App extends Component {
   handleShowIndex(){
     const {index, prevIndex} = this.state;
     const carousel = document.querySelectorAll(".carousel-item");
-    const thumbnails = document.querySelectorAll(".thumb-item");
 
     if(index != prevIndex){
-      for(let x=0; x <= carousel.length; x++){
+      for(let x=0; x < carousel.length; x++){
         if(x == index){
           carousel[x].classList.add("active");
           carousel[x].classList.add("fade");
 
           carousel[prevIndex].classList.remove("active");
           carousel[prevIndex].classList.remove("fade");
-
-          thumbnails[x].classList.add("active-img");
-          thumbnails[prevIndex].classList.remove("active-img");
         }
       }
+    }
+  }
+
+  handleMarkThumbnail(){
+    const {index, prevIndex} = this.state;
+    const thumbItems = document.querySelectorAll(".thumb-item");
+
+    console.log("mark thumb");
+    console.log(index);
+
+    for(let x=0; x < thumbItems.length; x++){
+      if(x == index){
+        thumbItems[x].classList.add("active-img");
+        thumbItems[prevIndex].classList.remove("active-img");
+      }
+    }
+
+    if(index == thumbItems.length){
+      thumbItems[0].classList.add("active-img");
+      thumbItems[prevIndex].classList.remove("active-img");
     }
   }
 
@@ -205,15 +231,15 @@ class App extends Component {
     let newItems;
     let thumbnails;
 
-    if(items){
-      console.log("--------");
-      console.log("This is the previous index:")
-      console.log(prevIndex);
+    // if(items){
+    //   console.log("--------");
+    //   console.log("This is the previous index:")
+    //   console.log(prevIndex);
 
-      console.log("This is the current index:")
-      console.log(index);
-      console.log("--------");
-    }
+    //   console.log("This is the current index:")
+    //   console.log(index);
+    //   console.log("--------");
+    // }
 
     if(!loading){
       newItems = items.map( (item) => {
